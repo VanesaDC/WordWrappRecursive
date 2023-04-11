@@ -28,6 +28,7 @@ public class WrapperShould {
     }
 
     private String wrapper(String text, int colum) {
+
         if (text.length()==colum){
             return text= text+"\n";
         }
