@@ -27,15 +27,23 @@ public class WrapperShould {
         assertEquals("a\nb", wrapper("a b",1));
     }
 
-    private String wrapper(String text, int colum) {
 
+
+    private String wrapper(String text, int colum) {
         if (text.length()==colum){
             return text= text+"\n";
         }
 
-        if (text.length()>colum){
-            return text="\n"+text;
+        if (text.length()>colum) {
+            if (text.contains(" ")) {
+                String divisionPoint= String.valueOf(text.charAt(colum));
+                text = text.replace(text.charAt(colum), '\n');
+            }else{
+                text="\n"+text;
+            }
         }
+
+
         return text;
     }
 
