@@ -26,6 +26,10 @@ public class WrapperShould {
         if (text.length()==colum){
             return text= text+"\n";
         }
+
+        if (text.length()>colum){
+            return text="\n"+text;
+        }
         return text;
     }
 
