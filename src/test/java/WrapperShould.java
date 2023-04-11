@@ -10,7 +10,7 @@ public class WrapperShould {
 
     @Test
     void allow_empty_text_and_colum_number_0(){
-        assertEquals("", wrapper("",0));
+        assertEquals("\n", wrapper("",0));
     }
     @Test
     void foo(){
@@ -18,6 +18,9 @@ public class WrapperShould {
     }
 
     private String wrapper(String text, int colum) {
+        if (text.length()==colum){
+            return text= text+"\n";
+        }
         return text;
     }
 
