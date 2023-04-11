@@ -14,7 +14,9 @@ public class WrapperShould {
 
     }
 
-
+    private String wrapper(String text, int colum) {
+        return text;
+    }
 
 
 }
