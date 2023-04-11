@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 "", 0->""
 "a",1->""
 "a",0->"\na"
+"a b",1->a\nb
  */
 
 public class WrapperShould {
@@ -20,6 +21,10 @@ public class WrapperShould {
     @Test
     void foo1(){
         assertEquals("\na", wrapper("a",0));
+    }
+    @Test
+    void foo2(){
+        assertEquals("a\nb", wrapper("a b",1));
     }
 
     private String wrapper(String text, int colum) {
