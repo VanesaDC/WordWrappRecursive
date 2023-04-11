@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 "a",0->"\na"
 "a b",1->a\nb
 "a b",2->a\nb
+"ab",1->\nab
  */
 
 public class WrapperShould {
@@ -42,7 +43,13 @@ public class WrapperShould {
         if (text.length()>colum) {
             if (text.contains(" ")) {
                 String divisionPoint= String.valueOf(text.charAt(colum));
-                text = text.replace(text.charAt(colum), '\n');
+                if (divisionPoint.equals(" ")){
+                    text = text.replace(text.charAt(colum), '\n');
+                }else{
+                    int cut= text.lastIndexOf(" ");
+                    text = text.replace(text.charAt(cut), '\n');
+                }
+
             }else{
                 text="\n"+text;
             }
