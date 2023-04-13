@@ -1,11 +1,13 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 /*
 "", 0->""
-"aaaa",3->aaaa
+"aaaa",4->aaaa
 "abc dfg", 3->"abc\ndfg"
-"abc dfg", 2->"abc\ndfg"
+"Mas desde", 6->"Mas\ndesde"
 
 
 
@@ -22,6 +24,15 @@ public class WrapperShould {
     void foo() {
         assertEquals("aaaa", wrapper("aaaa", 4));
     }
+    @Test
+    void cutting_is_a_space() {
+        assertEquals("aaa\nbbbb", wrapper("aaa bbbb", 4));
+    }
+
+   /* @Test
+    void cut_entry_in_the_previous_spaces_when_cut_points_is_in_a_character() {
+        assertEquals("Mas\ndesde", wrapper("Mas desde", 6));
+    }*/
 
 
 
@@ -33,8 +44,7 @@ public class WrapperShould {
         if (entry.length() == colum )
             return entry;
 
-        final String space = " ";
-        final String lineBreak = "\n";
+
 
 
 
