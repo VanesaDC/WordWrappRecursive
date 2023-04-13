@@ -50,13 +50,20 @@ public class WrapperShould {
 
         ArrayList<String> texts= new ArrayList<>();
         String cutting= String.valueOf( entry.charAt(cutPoint));
+
         if (cutting.equals(space)){
             String firstText = entry.substring(0,cutPoint);
             String secondText = entry.substring(cutPoint).trim();
             texts.add(firstText + lineBreak);
             return  texts.stream().reduce("",(text, item)->text +item)+ secondText;
+
+        }else{
+            int lastSpace= entry.lastIndexOf(space);
+            String firstText = entry.substring(0,lastSpace);
+            String secondText = entry.substring(cutPoint-1).trim();
+            texts.add(firstText + lineBreak);
+            return  texts.stream().reduce("",(text, item)->text +item)+ secondText;
         }
 
-        return entry;
     }
 }
