@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 "aaaa",4->aaaa
 "abc dfg", 3->"abc\ndfg"
 "Mas desde", 6->"Mas\ndesde"
+"Muchachitos",6-> Muchac--hitos
 
 
 
@@ -33,37 +34,54 @@ public class WrapperShould {
     void cut_entry_in_the_previous_spaces_when_cut_points_is_in_a_character() {
         assertEquals("Mas\ndesde", wrapper("Mas desde", 6));
     }
+    @Test
+    void no_is_previous_space_the_cutting_and_cut_is_in_a_character() {
+        assertEquals("Muchac\nhitos", wrapper("Muchachitos", 6));
+    }
+
+
+
 
 
 
     private String wrapper(String entry, int colum) {
 
-        if (colum==0)
+        if (colum == 0)
             return entry;
 
-        if (entry.length() == colum )
+        if (entry.length() == colum)
             return entry;
 
         final String space = " ";
         final String lineBreak = "\n";
-        final int cutPoint= colum-1;
+        final int cutPoint = colum - 1;
 
-        ArrayList<String> texts= new ArrayList<>();
-        String cutting= String.valueOf( entry.charAt(cutPoint));
+        ArrayList<String> texts = new ArrayList<>();
+        String cutting = String.valueOf(entry.charAt(cutPoint));
 
-        if (cutting.equals(space)){
-            String firstText = entry.substring(0,cutPoint);
+        if (cutting.equals(space)) {
+            String firstText = entry.substring(0, cutPoint);
             String secondText = entry.substring(cutPoint).trim();
             texts.add(firstText + lineBreak);
-            return  texts.stream().reduce("",(text, item)->text +item)+ secondText;
+            entry= texts.stream().reduce("", (text, item) -> text + item) + secondText;
 
-        }else{
-            int lastSpace= entry.lastIndexOf(space);
-            String firstText = entry.substring(0,lastSpace);
-            String secondText = entry.substring(cutPoint-1).trim();
-            texts.add(firstText + lineBreak);
-            return  texts.stream().reduce("",(text, item)->text +item)+ secondText;
+        } else {
+            if (entry.contains(space)) {
+                int lastSpace = entry.lastIndexOf(space);
+                String firstText = entry.substring(0, lastSpace);
+                String secondText = entry.substring(cutPoint - 1).trim();
+                texts.add(firstText + lineBreak);
+                entry= texts.stream().reduce("", (text, item) -> text + item) + secondText;
+            }else{
+                String firstText = entry.substring(0, cutPoint+1);
+                String secondText = entry.substring(cutPoint+1).trim();
+                texts.add(firstText + lineBreak);
+                entry= texts.stream().reduce("", (text, item) -> text + item) + secondText;
+            }
+
         }
-
+        return entry;
     }
+
+
 }
