@@ -29,10 +29,10 @@ public class WrapperShould {
         assertEquals("aaa\nbbbb", wrapper("aaa bbbb", 4));
     }
 
-   /* @Test
+    @Test
     void cut_entry_in_the_previous_spaces_when_cut_points_is_in_a_character() {
         assertEquals("Mas\ndesde", wrapper("Mas desde", 6));
-    }*/
+    }
 
 
 
@@ -56,12 +56,6 @@ public class WrapperShould {
             texts.add(firstText + lineBreak);
             return  texts.stream().reduce("",(text, item)->text +item)+ secondText;
         }
-
-
-
-
-
-
 
         return entry;
     }
