@@ -44,6 +44,19 @@ public class WrapperShould {
         if (entry.length() == colum )
             return entry;
 
+        final String space = " ";
+        final String lineBreak = "\n";
+        final int cutPoint= colum-1;
+
+        ArrayList<String> texts= new ArrayList<>();
+        String cutting= String.valueOf( entry.charAt(cutPoint));
+        if (cutting.equals(space)){
+            String firstText = entry.substring(0,cutPoint);
+            String secondText = entry.substring(cutPoint).trim();
+            texts.add(firstText + lineBreak);
+            return  texts.stream().reduce("",(text, item)->text +item)+ secondText;
+        }
+
 
 
 
