@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 /*
@@ -9,9 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 "abc dfg", 3->"abc\ndfg"
 "Mas desde", 6->"Mas\ndesde"
 "Muchachitos",6-> Muchac--hitos
-
-
-
+"Muchachitos de los pueblos altos, no se si por el frío o por supercalifrajilisticospialidoso", 10 ->
+"Muchachito\ns de los\npueblos\naltos, no\nse si por\nel frío o\npor\nsupercalif\nrajilistic\nospialidos\no"
  */
 
 public class WrapperShould {
@@ -38,50 +38,32 @@ public class WrapperShould {
     void no_is_previous_space_the_cutting_and_cut_is_in_a_character() {
         assertEquals("Muchac\nhitos", wrapper("Muchachitos", 6));
     }
-
-
-
-
+    @Test
+    void no_is_previous_space_the_cutting_and_cut_is_in_a_character2() {
+        assertEquals("Muchachito\ns de los\npueblos\naltos, no\nse si por\nel frío o\npor\nsupercalif\nrajilistic\nospialidos\no",
+                wrapper("Muchachitos de los pueblos altos, no se si por el frío o por supercalifrajilisticospialidoso", 10));
+    }
 
 
     private String wrapper(String entry, int colum) {
 
-        if (colum == 0)
-            return entry;
-
-        if (entry.length() == colum)
-            return entry;
-
         final String space = " ";
         final String lineBreak = "\n";
-        final int cutPoint = colum - 1;
+        ArrayList<String> texts= new ArrayList<>();
 
-        ArrayList<String> texts = new ArrayList<>();
-        String cutting = String.valueOf(entry.charAt(cutPoint));
-
-        if (cutting.equals(space)) {
-            String firstText = entry.substring(0, cutPoint);
-            String secondText = entry.substring(cutPoint).trim();
-            texts.add(firstText + lineBreak);
-            entry= texts.stream().reduce("", (text, item) -> text + item) + secondText;
-
-        } else {
-            if (entry.contains(space)) {
-                int lastSpace = entry.lastIndexOf(space);
-                String firstText = entry.substring(0, lastSpace);
-                String secondText = entry.substring(cutPoint - 1).trim();
-                texts.add(firstText + lineBreak);
-                entry= texts.stream().reduce("", (text, item) -> text + item) + secondText;
-            }else{
-                String firstText = entry.substring(0, cutPoint+1);
-                String secondText = entry.substring(cutPoint+1).trim();
-                texts.add(firstText + lineBreak);
-                entry= texts.stream().reduce("", (text, item) -> text + item) + secondText;
+        while (entry.length() > colum){
+            int cut = colum;
+            String charCut = String.valueOf(entry.charAt(cut));
+            if ( !charCut.equals( space )) {
+                String provisional = entry.substring( 0, cut );
+                if ( provisional.contains( space )) {
+                    cut = provisional.lastIndexOf( space );
+                }
             }
-
+            String firstText = entry.substring( 0, cut );
+            texts.add ( firstText + lineBreak );
+            entry = entry.substring (cut).trim();
         }
-        return entry;
+        return texts.stream().reduce("", (sentence, words)->sentence + words) + entry;
     }
-
-
 }
