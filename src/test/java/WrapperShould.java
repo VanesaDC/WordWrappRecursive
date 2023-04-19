@@ -1,8 +1,4 @@
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 /*
 "", 0->""
@@ -29,7 +25,6 @@ public class WrapperShould {
     void cutting_is_a_space() {
         assertEquals("aaa\nbbbb", wrapper("aaa bbbb", 4));
     }
-
 
     @Test
     void cut_entry_in_the_previous_spaces_when_cut_points_is_in_a_character() {
