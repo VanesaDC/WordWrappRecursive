@@ -47,24 +47,27 @@ public class WrapperShould {
 
 
     private String wrapper(String entry, int colum) {
+        if (entry.length()==0)
+            return entry;
 
         final String space = " ";
         final String lineBreak = "\n";
-        ArrayList<String> texts= new ArrayList<>();
+        int cut = colum;
 
-        while (entry.length() > colum){
-            int cut = colum;
+        if (entry.length() > colum){
+
             String charCut = String.valueOf(entry.charAt(cut));
+            int beginIndex = 0;
             if ( !charCut.equals( space )) {
-                String provisional = entry.substring( 0, cut );
+                String provisional = entry.substring(beginIndex, cut );
                 if ( provisional.contains( space )) {
                     cut = provisional.lastIndexOf( space );
                 }
             }
-            String firstText = entry.substring( 0, cut );
-            texts.add ( firstText + lineBreak );
-            entry = entry.substring (cut).trim();
+            String textProcessed = entry.substring(beginIndex, cut ) + lineBreak;
+            String restOfText = entry.substring (cut).trim();
+            return textProcessed + wrapper(restOfText, colum);
         }
-        return texts.stream().reduce("", (sentence, words)->sentence + words) + entry;
+        return entry;
     }
 }
