@@ -30,6 +30,7 @@ public class WrapperShould {
         assertEquals("aaa\nbbbb", wrapper("aaa bbbb", 4));
     }
 
+
     @Test
     void cut_entry_in_the_previous_spaces_when_cut_points_is_in_a_character() {
         assertEquals("Mas\ndesde", wrapper("Mas desde", 6));
