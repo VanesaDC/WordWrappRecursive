@@ -1,7 +1,8 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 /*
-"", 0->""
+"aaaa", -5->throw error
+"", 8->""
 "aaaa",4->aaaa
 "abc dfg", 3->"abc\ndfg"
 "Mas desde", 6->"Mas\ndesde"
@@ -13,53 +14,59 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class WrapperShould {
 
     @Test
-    void allow_empty_text_and_colum_number_0() {
-        assertEquals("", wrapper("", 0));
+    void allow_empty_text() {
+        assertEquals("", wrap("", 8));
     }
 
     @Test
-    void foo() {
-        assertEquals("aaaa", wrapper("aaaa", 4));
+    void not_wrap_text_that_fits_with_columns() {
+        assertEquals("aaaa", wrap("aaaa", 4));
     }
     @Test
-    void cutting_is_a_space() {
-        assertEquals("aaa\nbbbb", wrapper("aaa bbbb", 4));
+    void wrap_text_without_spaces_that_does_not_fit_in_columns() {
+        assertEquals("aa\naa", wrap("aaaa", 2));
+    }
+    @Test
+    void wrap_when_cutpoint_is_a_space() {
+        assertEquals("aaa\nbbbb", wrap("aaa bbbb", 4));
     }
 
     @Test
-    void cut_entry_in_the_previous_spaces_when_cut_points_is_in_a_character() {
-        assertEquals("Mas\ndesde", wrapper("Mas desde", 6));
+    void wrap_text_in_the_previous_spaces_when_cutpoint_is_a_character() {
+        assertEquals("Mas\ndesde", wrap("Mas desde", 6));
     }
     @Test
-    void no_is_previous_space_the_cutting_and_cut_is_in_a_character() {
-        assertEquals("Muchac\nhitos", wrapper("Muchachitos", 6));
+    void wrap_text_when_not_are_previous_space() {
+        assertEquals("Muchac\nhitos", wrap("Muchachitos", 6));
     }
     @Test
-    void no_is_previous_space_the_cutting_and_cut_is_in_a_character2() {
+    void wrap_text_when_not_are_previous_space2() {
         assertEquals("Muchachito\ns de los\npueblos\naltos, no\nse si por\nel frío o\npor\nsupercalif\nrajilistic\nospialidos\no",
-                wrapper("Muchachitos de los pueblos altos, no se si por el frío o por supercalifrajilisticospialidoso", 10));
+                wrap("Muchachitos de los pueblos altos, no se si por el frío o por supercalifrajilisticospialidoso", 10));
     }
 
 
-    private String wrapper(String entry, int colum) {
+    private String wrap(String text, int column) {
 
         final String space = " ";
         final String lineBreak = "\n";
-        int cut = colum;
+        int cutIndex = column;
 
-        if (entry.length() > colum){
-            String charCut = String.valueOf(entry.charAt(cut));
+        boolean textLengthIsGreaterThanColumn = text.length() > column;
+        if (textLengthIsGreaterThanColumn){
+            String cutPoint = String.valueOf(text.charAt(cutIndex));
             int beginIndex = 0;
-            if ( !charCut.equals( space )) {
-                String provisional = entry.substring(beginIndex, cut );
-                if ( provisional.contains( space )) {
-                    cut = provisional.lastIndexOf( space );
+            boolean cutPointIsALetter = !cutPoint.equals(space);
+            if (cutPointIsALetter) {
+                String textToWrap = text.substring(beginIndex, cutIndex );
+                if ( textToWrap.contains( space )) {
+                    cutIndex = textToWrap.lastIndexOf( space );
                 }
             }
-            String textProcessed = entry.substring(beginIndex, cut ) + lineBreak;
-            String restOfText = entry.substring (cut).trim();
-            return textProcessed + wrapper(restOfText, colum);
+            String textProcessed = text.substring(beginIndex, cutIndex ) + lineBreak;
+            String restOfText = text.substring (cutIndex).trim();
+            return textProcessed + wrap(restOfText, column);
         }
-        return entry;
+        return text;
     }
 }
